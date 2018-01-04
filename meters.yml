@@ -1,0 +1,9 @@
+meters:
+    - name : Energy Monitor
+      type : EM09.yml
+      id : 1     # this is the slave address number
+      baudrate : 9600   # Baud
+      bytesize : 8
+      parity : none # none | odd | even
+      stopbits : 1
+      timeout  : 0.5   # seconds
