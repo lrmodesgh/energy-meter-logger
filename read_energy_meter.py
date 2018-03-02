@@ -38,12 +38,12 @@ class DataCollector:
         return self.meter_map
 
     def collect_and_store(self):
-        #instrument.debug = True
         meters = self.get_meters()
         t_utc = datetime.utcnow()
         t_str = t_utc.isoformat() + 'Z'
 
         instrument = minimalmodbus.Instrument('/dev/ttyUSB0', 1) # port name, slave address (in decimal)
+        instrument.debug = True
         instrument.mode = minimalmodbus.MODE_RTU   # rtu or ascii mode
         datas = dict()
         meter_id_name = dict() # mapping id to name
@@ -103,7 +103,7 @@ class DataCollector:
                         raise
 
             datas[meter['id']]['Read time'] =  time.time() - start_time
-
+            log.debug(datas)
         json_body = [
             {
                 'measurement': 'energy',
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--interval', default=1,
+    parser.add_argument('--interval', default=5,
                         help='Meter readout interval (seconds), default 60')
     parser.add_argument('--meters', default='meters.yml',
                         help='YAML file containing Meter ID, name, type etc. Default "meters.yml"')
